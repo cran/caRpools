@@ -87,7 +87,7 @@ knitr::kable(CONTROL1.g.annotate[1:10,])
 ## ----geneinfo-replace, echo=TRUE, eval=TRUE------------------------------
 CONTROL1.replaced = get.gene.info(CONTROL1, namecolumn=1,
       extractpattern=expression("^(.+?)(_.+)"), database="ensembl", dataset="hsapiens_gene_ensembl",
-      filters="hgnc_symbol", attributes = c("ensembl_gene_id"), return.val = "dataset")
+      filters="hgnc_symbol", attributes ="ensembl_gene_id", return.val = "dataset")
 
 knitr::kable(CONTROL1.replaced[1:10,])
 

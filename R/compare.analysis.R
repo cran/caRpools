@@ -1,4 +1,4 @@
-compare.analysis = function(wilcox=NULL, deseq=NULL, mageck=NULL, type="enriched", cutoff.deseq = NULL, cutoff.wilcox = NULL, cutoff.mageck = NULL, cutoff.override=TRUE, cutoff.hits=5, output="list", sort.by=c("mageck","fdr","fdr"),plot.method=c("wilcox","mageck", "deseq"), plot.feature=c("pval","fdr","pval"), pch=16)
+compare.analysis = function(wilcox=NULL, deseq=NULL, mageck=NULL, type="enriched", cutoff.deseq = NULL, cutoff.wilcox = NULL, cutoff.mageck = NULL, cutoff.override=TRUE, cutoff.hits=5, output="list", sort.by=c("mageck","pval","fdr"),plot.method=c("wilcox","mageck", "deseq"), plot.feature=c("pval","fdr","pval"), pch=16)
 {
   #type = enriched | depleted
   #output = list | rank | venn
@@ -227,13 +227,12 @@ if(output=="list")
     
   
     # Cutoff
-    #if(!is.null(cutoff.hits))
-    #{
-    #  df.output = df.output[1:cutoff.hits,]
+    if(!is.null(cutoff.hits))
+    {
+      df.output = df.output[1:cutoff.hits,]
       
-    #}
+    }
     
-    #return(df.output)
     return(df.output)
     #return data
 
@@ -583,8 +582,8 @@ if(output=="list")
     min.y = min(min(df.output.x[,plot.yaxis]),min(df.output.y[,plot.yaxis]),min(df.output.z[,plot.yaxis]))
     max.y = max(max(df.output.x[,plot.yaxis]),max(df.output.y[,plot.yaxis]),max(df.output.z[,plot.yaxis]))
     
-    print(c(min(df.output.x[,plot.yaxis]),min(df.output.y[,plot.yaxis]),min(df.output.z[,plot.yaxis])))
-    print(c(max(df.output.x[,plot.yaxis]),max(df.output.y[,plot.yaxis]),max(df.output.z[,plot.yaxis])))
+    #print(c(min(df.output.x[,plot.yaxis]),min(df.output.y[,plot.yaxis]),min(df.output.z[,plot.yaxis])))
+    #print(c(max(df.output.x[,plot.yaxis]),max(df.output.y[,plot.yaxis]),max(df.output.z[,plot.yaxis])))
     ylim = c(min.y, max.y)
     
    # print(ylim)

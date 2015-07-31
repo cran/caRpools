@@ -13,7 +13,7 @@ This is done using the function `compare.analysis`, which offers not only ouptu 
 compare.analysis(wilcox=NULL, deseq=NULL, mageck=NULL, type="enriched",
 cutoff.deseq = NULL, cutoff.wilcox = NULL, cutoff.mageck = NULL,
 cutoff.override=TRUE, cutoff.hits=5, output="list",
-sort.by=c("mageck","fdr","fdr"), plot.method=c("wilcox","mageck", "deseq"),
+sort.by=c("mageck","pval","fdr"), plot.method=c("wilcox","mageck", "deseq"),
 plot.feature=c("pval","fdr","pval"), pch=16)
 }
 %- maybe also 'usage' for other objects documented here.

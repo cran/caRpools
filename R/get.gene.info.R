@@ -42,6 +42,7 @@ if(!is.null(data) && nrow(data)>=1)
       values= gene.names,
       mart = handling)
     
+    #str(gene.info)
     if(nrow(gene.info) >= 1)
     {
       data$replace = as.character(gene.names)
@@ -49,52 +50,54 @@ if(!is.null(data) && nrow(data)>=1)
       #print(data$replace)
       #gene.info.ext <-gene.info
       #print(gene.info)
-      for(i in 1:nrow(gene.info))
-      {
+      
+      
+      # Gene info has - original identifier - new identifier
+      # data has - namecolumn, .... - original gene name
+      # we want to replace the namecolumn set with the new identifier, if there is no new one, we keep the old one
+      
+      # First duplicate check on gene info to remove duplicates in NEW gene identifier
+      # output to file for additional reference
+      # Remove duplicates
+      gene.info <- gene.info[!duplicated(gene.info[,2]),]
+      # Then apply on data with namecolumn and put in there, what gene info 2 is giving for those where gene.info 1 is equal to extractd namecolumn, replace namecolumn 
+      data[,namecolumn] = apply(data,1, function(z){
+        # compare name in gene.info[,1] with data namecolumn and set replace = gene.info[,2]
+          #return(gene.info[gene.info[,1] == z["replace"] ,2]) 
+        sgRNAident = sub(extractpattern,"\\2",as.character(z[namecolumn]),perl=TRUE)
         
-        #print(gene.info[i,])
-        #add replace information to dataset
-        if(gene.info[i,2] != "")
+        if(z["replace"] %in% gene.info[,1])
+        {replacement = TRUE
+        } else {
+          replacement = FALSE
+        }
+        if(identical(controls,TRUE))
         {
-          # if dataset is control
-          if(identical(controls, TRUE))
-          {
-            data[data[,namecolumn] == gene.info[i,1],"replace"] = gene.info[i,2]
+          if(identical(replacement, TRUE))
+          { return(gene.info[gene.info[,1] == z["replace"] ,2])
+          } else {
+            return(z["replace"])
           }
-          else
-          {
-            data[sub(extractpattern,"\\1",data[,namecolumn],perl=TRUE) == gene.info[i,1],"replace"] = gene.info[i,2]
+          #return(gene.info[gene.info[,1] == z["replace"] ,2])
+        } else {
+          
+          if(identical(replacement, TRUE))
+          { 
+            return(as.factor(paste(as.character(gene.info[gene.info[,1] == z["replace"] ,2][1]),sgRNAident,sep="")))
+          } else {
+            return(as.factor(paste(as.character(z["replace"]),sgRNAident,sep="")))
           }
-          
-          # test2 <<- data[sub(extractpattern,"\\1",data[,namecolumn],perl=TRUE) == gene.info[i,1],"replace"]
+          #return(as.factor(paste(as.character(gene.info[gene.info[,1] == z["replace"] ,2]),sub(extractpattern,"\\2",as.character(z[namecolumn]),perl=TRUE),sep="")) )
         }
-        else
-        {
-          #do nothing
-        }
-      }
-      
-      #Overwrite gene identifier by what is listed as attribute
-      # if empty, give them the original name back
-      if(identical(controls,TRUE))
-      {
-        data[,namecolumn] = as.factor(data[,"replace"])
-        #data[,namecolumn] = as.factor(data[,"replace"])
-      }
-      else
-      {
-        data[,namecolumn] = apply(data,1, function(x){
-          
-          as.factor(paste(as.character(x["replace"]),sub(extractpattern,"\\2",as.character(x[namecolumn]),perl=TRUE),sep=""))
-          
-          
-        }
-        )
-          #as.factor(paste(data[,"replace"],sub(extractpattern,"\\2",data[,namecolumn],perl=TRUE),sep=""))
-        #data[,namecolumn] = as.factor(paste(data[,"replace"],sub(extractpattern,"\\2",data[,namecolumn],perl=TRUE),sep=""))
-      }
-      
+      })
+
+      # output to file for additional reference
       data$replace=NULL
+      
+      # check for duplicates and use original identifier instead which is stored in gene names
+      
+      
+      
       return(data)
       
     }
@@ -156,5 +159,6 @@ if(!is.null(data) && nrow(data)>=1)
   }
   
 }
+
   
 }

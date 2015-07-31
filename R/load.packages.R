@@ -47,5 +47,5 @@ load.packages = function(noupdate=TRUE)
   if("caRpools" %in% rownames(installed.packages()) == FALSE) {install.packages("caRpools")}
   #library(caRpools,warn.conflicts = FALSE, quietly = TRUE,verbose =FALSE)
   
-  return(1)
+  return(TRUE)
 }
