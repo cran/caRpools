@@ -1,0 +1,12 @@
+export(aggregatetogenes, gene.remove, load.file, carpools.hitident, carpools.read.count.vs, carpools.read.depth, carpools.read.distribution, carpools.reads.genedesigns, stat.DESeq, stat.mageck, stat.wilcox, get.gene.info, carpools.hit.scatter, carpools.hit.sgrna, carpools.hit.overview, carpools.raw.genes, stats.data, unmapped.genes, generate.hits, compare.analysis, carpools.sgrna.table,carpools.waterfall.pval, load.packages, final.table, data.extract, check.caRpools, use.caRpools)
+importFrom("grDevices", "dev.flush", "dev.hold", "rgb", "xy.coords")
+importFrom("graphics", "Axis", "abline", "axis", "barplot", "box",
+             "boxplot", "hist", "legend", "lines", "mtext", "par",
+             "plot", "plot.new", "plot.window", "points", "polygon",
+             "rect", "segments", "strheight", "strwidth", "symbols",
+             "text", "title")
+importFrom("stats", "aggregate", "aggregate.data.frame", "cor",
+             "density", "median", "p.adjust", "quantile", "sd",
+             "wilcox.test")
+importFrom("utils", "install.packages", "installed.packages",
+             "read.table", "write.table")
