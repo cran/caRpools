@@ -125,6 +125,9 @@ if(!is.null(data) && nrow(data)>=1)
     }
     #start biomaRt interface
     handling = biomaRt::useMart(database)
+    if(!exists("handling"))
+    {stop("biomaRt connection is not working. This can be a connectivity issue (e.g. proxy settings, internet connection) or the biomaRt service is currently not avaible. \n
+          You can skip any data annotation by setting it to FALSE in the MIACCS file.")}
     handling = biomaRt::useDataset(dataset,mart=handling)
     gene.info = biomaRt::getBM(
       filters=filters,
@@ -145,9 +148,7 @@ if(!is.null(data) && nrow(data)>=1)
     {
       for(i in 1:nrow(gene.info))
       {
-        
         data.return[data.return[,namecolumn]== gene.info[i,1],m] = gene.info[i,m]
-       
       }
       #data.return = cbind.data.frame(data.return, gene.info[,1:cols])
     }

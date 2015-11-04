@@ -15,7 +15,7 @@ dataset.names = NULL, xlab="Readcount Dataset1", ylab="Readcount Dataset2", xlim
 ylim=NULL, pch=16, col = rgb(0, 0, 0, alpha = 0.65), labelgenes=NULL, labelcolor="red",
 extractpattern=expression("^(.+?)_.+"), plotline=TRUE, normalize=TRUE,
 norm.function=median, offsetplot=1.2, center=FALSE, aggregated=FALSE,
-pairs=FALSE, type=NULL, identify=FALSE)
+pairs=FALSE, type=NULL, plot.identify=FALSE, plot.log=TRUE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -130,9 +130,14 @@ This indicates whether you would like to color all highlighted genes in either r
 *Default* NULL  
 *Values* NULL, "enriched", "depleted"  
 }
-\item{identify}{
+\item{plot.identify}{
 You can ask R to let you identify genes by clikcing on the dots in the graph. This only works if `pairs=FALSE`.  
 *Default* FALSE  
+*Values* TRUE, FALSE (boolean)  
+}
+\item{plot.log}{
+If all plots are created using log-transformed data.  
+*Default* TRUE  
 *Values* TRUE, FALSE (boolean)  
 }
 }

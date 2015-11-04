@@ -12,8 +12,8 @@ In a first step, NGS FASTQ data is extracted and mapped against a reference libr
 }
 \usage{
 data.extract(scriptpath=NULL, datapath=NULL, fastqfile=NULL, extract = FALSE,
-pattern = "default", maschinepattern = "default", createindex = FALSE,
-bowtie2file = NULL, referencefile= NULL, mapping = FALSE, reversecomplement = FALSE,
+pattern = "default", machinepattern = "default", createindex = FALSE,
+referencefile = NULL, mapping = FALSE, reversecomplement = FALSE,
 threads = 1, bowtieparams = "", sensitivity = "very-sensitive-local", match = "perfect")
 }
 %- maybe also 'usage' for other objects documented here.
@@ -42,16 +42,13 @@ Whether CRISPR-extract.pl is used to extract the 20 nt target sequence from the 
 PERL regular Expression to extract 20 nt target sequence from NGS reads. Please see *extract pattern* in this manual for more information.  
 *Default* Regular Expression (character)  
 }
-\item{maschinepattern}{
+\item{machinepattern}{
 Maschine ID of your Sequencing maschine. Used ot identify the read id.  
 }
 \item{createindex}{
 Do you want caRpools to generate a bowtie2 index? Only necessary if `mapping=TRUE`.
 *Default* FALSE  
 *Values* TRUE, FALSE  
-}
-\item{bowtie2file}{
-Filename of bowtie2 index file, without extension. Is the same as reference file, if `createindex=TRUE`.  
 }
 \item{referencefile}{
 Filename of the library reference FASTA file, without extension. Is the same as bowtie2 file, if `createindex=TRUE`.  

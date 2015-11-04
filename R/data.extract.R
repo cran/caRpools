@@ -1,4 +1,4 @@
-data.extract = function(scriptpath=NULL, datapath=NULL, fastqfile=NULL, extract = FALSE, pattern = "default", maschinepattern = "default", createindex = FALSE, bowtie2file = NULL, referencefile= NULL, mapping = FALSE, reversecomplement = FALSE, threads = 1, bowtieparams = "", sensitivity = "very-sensitive-local", match = "perfect")
+data.extract = function(scriptpath=NULL, datapath=NULL, fastqfile=NULL, extract = FALSE, pattern = "default", machinepattern = "default", createindex = FALSE, referencefile = NULL, mapping = FALSE, reversecomplement = FALSE, threads = 1, bowtieparams = "", sensitivity = "very-sensitive-local", match = "perfect")
   
 {
   # ON MAC, Rstudio has to be started different!
@@ -64,8 +64,8 @@ data.extract = function(scriptpath=NULL, datapath=NULL, fastqfile=NULL, extract 
     extractstring = shQuote(file.path(scriptpath, "CRISPR-extract.pl"))
     filearg = shQuote(file.path(datapath, paste(fastqfile, ".fastq", sep="")))
     
-    print(paste("Extraction command is sent to the system:", paste("perl", paste("'",extractstring, "'", sep=""),paste("'", pattern,"'", sep=""), filearg, reversecomplement, paste("'", maschinepattern, "'", sep=""), sep=" "), sep=" "))
-    system(paste("perl", paste("'",extractstring, "'", sep=""),paste("'", pattern,"'", sep=""), filearg, reversecomplement, paste("'", maschinepattern, "'", sep=""), sep=" "))
+    print(paste("Extraction command is sent to the system:", paste("perl", paste("'",extractstring, "'", sep=""),paste("'", pattern,"'", sep=""), filearg, reversecomplement, paste("'", machinepattern, "'", sep=""), sep=" "), sep=" "))
+    system(paste("perl", paste("'",extractstring, "'", sep=""),paste("'", pattern,"'", sep=""), filearg, reversecomplement, paste("'", machinepattern, "'", sep=""), sep=" "))
     
     toreturn = paste(fastqfile, "_extracted.fastq", sep="")
     # change name for further use
@@ -87,10 +87,9 @@ data.extract = function(scriptpath=NULL, datapath=NULL, fastqfile=NULL, extract 
       # call bowtie 2
       system(paste("bowtie2-build", "-f", filearg, paste(bt2index, bowtieparams, sep=" ")))
       # set name of bowtie2 indexfile
-      bowtie2file = referencefile
+      
     }
     
-    if(is.null(bowtie2file)) {stop("Bowtie2 index file name not set!")}
     # do the mapping using the Bowtie2 Index File
     print(fastqfile)
     print(datapath)

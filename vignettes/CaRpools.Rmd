@@ -36,7 +36,7 @@ html_vignette <- function(fig_width = 6,
 
 
 ```{r loadlibs, echo=FALSE, error=FALSE, warning=FALSE, message=FALSE, include=FALSE}
-options(RCurlOptions=list(proxy="www-int2.inet.dkfz-heidelberg.de:80", http.version=1))
+#options(RCurlOptions=list(proxy="www-int2.inet.dkfz-heidelberg.de:80", http.version=1))
 options(repos = c(CRAN="http://cran.r-project.org"))
 if("caRpools" %in% rownames(installed.packages()) == FALSE) {install.packages("caRpools")}
   library(caRpools,warn.conflicts = FALSE, quietly = TRUE,verbose =FALSE)
@@ -304,7 +304,7 @@ Files can be loaded via `load.file(filename, header, sep)` with the following ar
 
 * filename: the filename as character
 * header: TRUE / FALSE , whether a header is used (as it is for the above sample)
-* sep: the seperator, default is `\t` for tab-separated files.
+* sep: the separator, default is `\t` for tab-separated files.
 
 **Please see `?read.table` for a detailed description of the arguments.**
 
@@ -491,6 +491,90 @@ Therefore caRpools offers the user different options for data analysis as illust
 
 ![](./pictures/miaccs-analysis.png)
 
+
+## Providing more than two replicates per Group
+
+CaRpools allows the usage of more than two replicates for both the untreated and treated groups. However, the standard templates we provide accept two biological replicates only.  
+
+There are two ways of using the caRpools report generation function with more replicates:
+
+* use the provided templates stating __4-replicates__
+* modify the templates
+
+If you like to modify the template of caRpools, you just need to add certain statements for the additional replicates. This will change with the next larger update.  
+
+#### Load more files
+
+When loading files (e.g. read-count files or fastq files for extraction), you can just put additional code of the following scheme:
+
+```{r, eval=FALSE, echo=TRUE}
+## for data extraction of a third replicate or more
+
+# First edit the MIACCS file loading
+fileCONTROL3 = as.character(miaccs["carpools.untreated3",3])
+d.CONTROL3 = as.character(miaccs["carpools.untreated3.desc",3])
+
+fileTREAT3 = as.character(miaccs["carpools.treated3",3])
+d.TREAT3 = as.character(miaccs["carpools.treated3.desc",3])
+
+# Additional CONTROL replicate
+fileCONTROL3 = data.extract(scriptpath, datapath, fastqfile=fileCONTROL3, extract, seq.pattern, maschine.pattern, createindex, bowtie2file, referencefile, mapping, reversecomplement, threads, bowtieparams, sensitivity, match)
+# Additional Treatment replicate
+fileTREAT3 = data.extract(scriptpath, datapath, fastqfile=fileTREAT3, extract, seq.pattern, maschine.pattern, createindex, bowtie2file, referencefile, mapping, reversecomplement, threads, bowtieparams, sensitivity, match)
+
+## If you do not want to extract FASTQ files, but just load a read-count file this is the way to go
+
+CONTROL3 = load.file(paste(datapath, fileCONTROL3, sep="/"))
+TREAT3 = load.file(paste(datapath, fileTREAT3, sep="/"))
+
+```
+
+#### QC plots and Gene Annotation using several replicates
+
+In principal you can use as many replicates per treatment group as you want, the minimum however is two replicates.
+Some of the QC plots and other functions require single replicates, others can be used with as many replicates as you want directly within the function call.
+
+This means you need to call the function for each replicate separately for the following functions:   
+
+* load.file
+* data.extract
+* get.gene.info
+* aggregatetogenes
+* stats.data
+* unmapped.genes
+* carpools.read.distribution
+* carpools.reads.genedesigns
+
+These function accept several replicates directly as a list:
+
+* carpools.read.depth
+* carpools.readcount.vs
+* stat.wilcox
+* stat.deseq
+* stat.mageck
+
+All other functions do not depend on read-count data directly so that you do not think about replicates for those, as all handling is done automatically.
+
+#### Provide more replicates to statistical analysis
+
+```{r, eval=FALSE, echo=TRUE}
+
+## WILCOX
+# Provide more replicates as list
+data.wilcox = stat.wilcox(untreated.list = list(CONTROL1, CONTROL2, CONTROL3, CONTROL4), treated.list = list(TREAT1,TREAT2, TREAT3, TREAT4), namecolumn=namecolumn, fullmatchcolumn=fullmatchcolumn, normalize=normalize, norm.fun=norm.function, sorting=FALSE, controls=controls.nontarget, control.picks=control.picks)
+
+## DESEQ2
+data.deseq = stat.DESeq(untreated.list =  list(CONTROL1, CONTROL2, CONTROL3, CONTROL4), treated.list = list(TREAT1,TREAT2, TREAT3, TREAT4), namecolumn=namecolumn, fullmatchcolumn=fullmatchcolumn, extractpattern=g.extractpattern, sorting=FALSE, filename.deseq = paste(analysis.name, "-ANALYSIS-DESeq2-sgRNA.tab", sep=""), sgRNA.pval = sig.pval.deseq, fitType="mean")
+
+## MAGECK
+data.mageck = stat.mageck(untreated.list = list(CONTROL1, CONTROL2, CONTROL3, CONTROL4), treated.list = list(TREAT1,TREAT2, TREAT3, TREAT4), namecolumn=namecolumn, fullmatchcolumn=fullmatchcolumn, norm.fun="median", extractpattern=g.extractpattern, mageckfolder=NULL, sort.criteria="neg", adjust.method="fdr", filename = paste(analysis.name, "-ANALYSIS-MAGeCK-RAW", sep=""), fdr.pval=sig.pval.mageck)
+
+```
+
+
+
+
+
 # Start CaRpools Report Generation
 
 You can start caRpools Report Generation after you did the following steps:
@@ -662,7 +746,7 @@ Whether CRISPR-extract.pl is used to extract the 20 nt target sequence from the 
 PERL regular Expression to extract 20 nt target sequence from NGS reads. Please see *extract pattern* in this manual for more information.  
 *Default* Regular Expression (character)  
 
-**maschinepattern**  
+**machinepattern**  
 Machine ID of your Sequencing machine. Used to identify the read id.  
 
 **createindex**  
@@ -848,7 +932,7 @@ Is set to TRUE if `data` is not a data frame, but a vector.
 ```{r geneinfo-replace, echo=TRUE, eval=TRUE}
 CONTROL1.replaced = get.gene.info(CONTROL1, namecolumn=1,
       extractpattern=expression("^(.+?)(_.+)"), database="ensembl", dataset="hsapiens_gene_ensembl",
-      filters="hgnc_symbol", attributes ="ensembl_gene_id", return.val = "dataset")
+      filters="hgnc_symbol", attributes =c("ensembl_gene_id"), return.val = "dataset")
 
 knitr::kable(CONTROL1.replaced[1:10,])
 ```
@@ -1649,7 +1733,6 @@ p4 = carpools.raw.genes(untreated.list = list(CONTROL1, CONTROL2),
 ```
 
 
-
 ## Hit Calling / Candidate Analysis
 
 
@@ -1661,14 +1744,29 @@ Hit analysis is performed using three different methods:
 
 For each analysis method, separate plots will be created and analysis files will be written.
 
+__Please note:__  
+
+All three methods use a different, orthogonal, approach to analyse your data, as it is explained in more detail below.  
+It is important to mention that no individual analysis method will perform well in all datasets and CRISPR pooled screens, thus it is important to check the result of each method as it is provided by caRpools.  
+Take your time and have a deep look at the results of each method for your screen.  
+
+Moreover, we highly recommend to iteratively change parameters, which are highlighted in the MIACCS file, so that novice users get a feeling of how the analysis methods perform on their screening data.  
+
+As a default, caRpools will provide you with __hit candidates called in all three methods as the most robust ones__. However, __having a closer look at candidates of each individual analysis method is highly recommended__.  
+
 __Wilcox__
 
+The Wilcox approach is thought to do a sgRNA population vs. sgRNA population comparison using a Wilcoxon Test.  
+
 Within this approach, the read counts of all sgRNAs in one data-set are first normalized by the function set in the MIACCS file. By default, normalization is done by read count division with the data-set median.  
-Then, the fold change of each population of sgRNAs for a gene is tested against the population of either the non-targeting controls or randomly picked sgRNAs, as defined by the random picks option within the MIACCS file, using a two-sided Mann-Whitney-U test. P-values are corrected for multiple testing using FDR.  
+Then, the fold change of each population of sgRNAs for a gene is tested against the population of either the non-targeting controls or randomly picked sgRNAs, as defined by the random picks option within the MIACCS file, using a two-sided Mann-Whitney-U test. P-values are finally corrected for multiple testing using FDR.  
 
 __DESeq2__
 
-For the DESeq2 analysis implementation, the read counts of all sgRNAs for a given gene are first summed up to increase the available read count.  
+In this test, DESeq2 is applied on gene-level to perform analysis on gene-level read-count instead of individual sgRNA read-counts.
+
+For the DESeq2 analysis implementation, the read counts of all sgRNAs for a given gene is aggregated.  
+Since all read-count files consist of the same number of sgRNAs per gene, a gene-level read-count is created for hit analysis.  
 Then, DESeq2 analysis is performed, which includes the estimation of size-factors, the variance stabilization using a parametric fit and a Wald-Test for difference in log2 fold changes between the untreated and treated data.  
 More information about this can be found in _Love et al._  
 [Moderated estimation of fold change and dispersion for RNA-seq data with DESeq2](http://www.ncbi.nlm.nih.gov/pubmed/25516281)  
@@ -1682,6 +1780,7 @@ Further information can be found at the [MAGeCK Homepage](http://sourceforge.net
 ***
 
 **All analysis methods require, if they are to be used with caRpools to generate standardized reports, two biological replicates of the untreated and the treated sample.**  
+**By default, _two replicates per condition_ are used by the templates provided. If you want to analyse more than two replicates per group, please have a look at _Providing more than two replicates_ . **  
 
 **Please note that hit candidate comparison strictly requires the output of all three analysis methods.**  
 
@@ -1690,7 +1789,6 @@ Further information can be found at the [MAGeCK Homepage](http://sourceforge.net
 All output from `stat.wilcox`, `stat.DEseq` and `stat.mageck` can be used for further analysis, e.g. visualization or hit candidate comparison (see below).  
 
 ***
-
 
 
 ### Candidate Calling with Wilcox
@@ -2373,7 +2471,7 @@ Defines whether all genes are plotted or only those being enriched or depleted.
 
 ### Read-Count Scatter Plots for Candidate Genes
 
-As described before, scatter plots can be generated for all datasets. `carpools.hit.scatter` serves as a wrapper for `carpools.read.count.vs` and allows faster plotting for individual candidate genes or all overlapping candidate genes. It generated a pairs plot with the representation of all provided samples and highlights the candidate gene.  
+As described before, scatter plots can be generated for all data-sets. `carpools.hit.scatter` serves as a wrapper for `carpools.read.count.vs` and allows faster plotting for individual candidate genes or all overlapping candidate genes. It generated a pairs plot with the representation of all provided samples and highlights the candidate gene.  
 
 ```{r hit-scatter, echo=TRUE, eval=TRUE, fig.height=8, fig.width=8}
 plothitsscatter.enriched = carpools.hit.scatter(wilcox=data.wilcox, deseq=data.deseq, mageck=data.mageck, dataset=list(TREAT1, TREAT2, CONTROL1, CONTROL2), dataset.names = c(d.TREAT1, d.TREAT2, d.CONTROL1, d.CONTROL2), namecolumn=1, fullmatchcolumn=2, title="Title", labelgenes="CASP8", labelcolor="orange", extractpattern=expression("^(.+?)(_.+)"), normalize=TRUE, norm.function=median, offsetplot=1.2, center=FALSE, aggregated=FALSE, type="enriched", cutoff.deseq = 0.001, cutoff.wilcox = 0.05, cutoff.mageck = 0.05, cutoff.override=FALSE, cutoff.hits=NULL,  pch=16)

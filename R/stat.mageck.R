@@ -81,33 +81,51 @@ stat.mageck=function(untreated.list, treated.list, namecolumn=1, fullmatchcolumn
 #   [--gene-test-fdr-threshold GENE_TEST_FDR_THRESHOLD]
 #   [--adjust-method {fdr,holm}] [--variance-from-all-samples]
 #   [--sort-criteria {neg,pos}] [--keep-tmp]
-
-# Create String
-if(ncol.treated== 2)
+  
+  
+# Treated samples start in 3rd row
+treated.samples = 0
+for(i in seq(from = 1, to = (0 + ncol.treated-1), by = 1))
 {
-  treated.samples = paste(0, 1, sep=",")
-  if(ncol.untreated== 2)
-  {
-    
-    untreated.samples = paste(ncol.treated, ncol.treated+1, sep=",")
-  }
-  else {
-    untreated.samples = ncol.treated
-  }
+  treated.samples = paste(treated.samples, i, sep=",")
 }
-else {
-  treated.samples = 0 
-  
-  if(ncol.untreated== 2)
-  {
-    
-    untreated.samples = paste(1, 2, sep=",")
-  }
-  else {
-    untreated.samples = 1
-  }
-  
+
+# Untreated samples start at 3rd + ncol.treated +1
+untreated.samples = 0+ncol.treated
+for(i in seq(from = (0+ncol.treated+1), to = (0+ncol.treated+ncol.untreated-1), by = 1))
+{
+  untreated.samples = paste(untreated.samples, i, sep=",")
 }
+
+
+# # Create String
+#  if(ncol.treated== 2)
+#  {
+#    treated.samples = paste(0, 1, sep=",")
+#    if(ncol.untreated== 2)
+#    {
+#      
+#      untreated.samples = paste(ncol.treated, ncol.treated+1, sep=",")
+#    }
+#    else {
+#      untreated.samples = ncol.treated
+#    }
+#  }
+#  else {
+#    treated.samples = 0 
+#    
+#    if(ncol.untreated== 2)
+#    {
+#      
+#      untreated.samples = paste(1, 2, sep=",")
+#    }
+#    else {
+#      untreated.samples = 1
+#    }
+#    
+#  }
+
+
 
 # str(dataset.combined.file)
 # str(treated.samples)

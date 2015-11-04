@@ -22,12 +22,46 @@ html_vignette <- function(fig_width = 6,
 
 
 ## ----loadlibs, echo=FALSE, error=FALSE, warning=FALSE, message=FALSE, include=FALSE----
-options(RCurlOptions=list(proxy="www-int2.inet.dkfz-heidelberg.de:80", http.version=1))
+#options(RCurlOptions=list(proxy="www-int2.inet.dkfz-heidelberg.de:80", http.version=1))
 options(repos = c(CRAN="http://cran.r-project.org"))
 if("caRpools" %in% rownames(installed.packages()) == FALSE) {install.packages("caRpools")}
   library(caRpools,warn.conflicts = FALSE, quietly = TRUE,verbose =FALSE)
 load.packages()
 data(caRpools)
+
+## ---- eval=FALSE, echo=TRUE----------------------------------------------
+#  ## for data extraction of a third replicate or more
+#  
+#  # First edit the MIACCS file loading
+#  fileCONTROL3 = as.character(miaccs["carpools.untreated3",3])
+#  d.CONTROL3 = as.character(miaccs["carpools.untreated3.desc",3])
+#  
+#  fileTREAT3 = as.character(miaccs["carpools.treated3",3])
+#  d.TREAT3 = as.character(miaccs["carpools.treated3.desc",3])
+#  
+#  # Additional CONTROL replicate
+#  fileCONTROL3 = data.extract(scriptpath, datapath, fastqfile=fileCONTROL3, extract, seq.pattern, maschine.pattern, createindex, bowtie2file, referencefile, mapping, reversecomplement, threads, bowtieparams, sensitivity, match)
+#  # Additional Treatment replicate
+#  fileTREAT3 = data.extract(scriptpath, datapath, fastqfile=fileTREAT3, extract, seq.pattern, maschine.pattern, createindex, bowtie2file, referencefile, mapping, reversecomplement, threads, bowtieparams, sensitivity, match)
+#  
+#  ## If you do not want to extract FASTQ files, but just load a read-count file this is the way to go
+#  
+#  CONTROL3 = load.file(paste(datapath, fileCONTROL3, sep="/"))
+#  TREAT3 = load.file(paste(datapath, fileTREAT3, sep="/"))
+#  
+
+## ---- eval=FALSE, echo=TRUE----------------------------------------------
+#  
+#  ## WILCOX
+#  # Provide more replicates as list
+#  data.wilcox = stat.wilcox(untreated.list = list(CONTROL1, CONTROL2, CONTROL3, CONTROL4), treated.list = list(TREAT1,TREAT2, TREAT3, TREAT4), namecolumn=namecolumn, fullmatchcolumn=fullmatchcolumn, normalize=normalize, norm.fun=norm.function, sorting=FALSE, controls=controls.nontarget, control.picks=control.picks)
+#  
+#  ## DESEQ2
+#  data.deseq = stat.DESeq(untreated.list =  list(CONTROL1, CONTROL2, CONTROL3, CONTROL4), treated.list = list(TREAT1,TREAT2, TREAT3, TREAT4), namecolumn=namecolumn, fullmatchcolumn=fullmatchcolumn, extractpattern=g.extractpattern, sorting=FALSE, filename.deseq = paste(analysis.name, "-ANALYSIS-DESeq2-sgRNA.tab", sep=""), sgRNA.pval = sig.pval.deseq, fitType="mean")
+#  
+#  ## MAGECK
+#  data.mageck = stat.mageck(untreated.list = list(CONTROL1, CONTROL2, CONTROL3, CONTROL4), treated.list = list(TREAT1,TREAT2, TREAT3, TREAT4), namecolumn=namecolumn, fullmatchcolumn=fullmatchcolumn, norm.fun="median", extractpattern=g.extractpattern, mageckfolder=NULL, sort.criteria="neg", adjust.method="fdr", filename = paste(analysis.name, "-ANALYSIS-MAGeCK-RAW", sep=""), fdr.pval=sig.pval.mageck)
+#  
 
 ## ----load-file, echo=TRUE, eval=FALSE------------------------------------
 #  CONTROL1 = load.file("./data/untreated1.txt", header= TRUE, sep="\t")
@@ -87,7 +121,7 @@ knitr::kable(CONTROL1.g.annotate[1:10,])
 ## ----geneinfo-replace, echo=TRUE, eval=TRUE------------------------------
 CONTROL1.replaced = get.gene.info(CONTROL1, namecolumn=1,
       extractpattern=expression("^(.+?)(_.+)"), database="ensembl", dataset="hsapiens_gene_ensembl",
-      filters="hgnc_symbol", attributes ="ensembl_gene_id", return.val = "dataset")
+      filters="hgnc_symbol", attributes =c("ensembl_gene_id"), return.val = "dataset")
 
 knitr::kable(CONTROL1.replaced[1:10,])
 
