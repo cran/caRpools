@@ -1,4 +1,4 @@
-e53a65141b44a0bdf2c9739b295cc1c1 *DESCRIPTION
+c30917d640b5bbd5bfd2bfdf56ccfb4b *DESCRIPTION
 d247d5214247f7993f3eff207105f33c *NAMESPACE
 4fb22d9eccc3b75aca5744b81616da3e *R/aggregatetogenes.R
 a9171e33646afc53f7027c624212bc9f *R/carpools.hit.overview.R
@@ -21,7 +21,7 @@ c883b8231e8d5565b62b568055750eda *R/check.caRpools.R
 a922a766276430de710805a112351f0a *R/final.table.R
 b54c23699d4578ca2e6d683e37e308a0 *R/gene.remove.R
 ae45c1aa43251c06c1854081cd66ef7d *R/generate.hits.R
-6c7adc6027486a6b4d7a511fb1e83701 *R/get.gene.info.R
+82952cc2d4b350c6dfdd84e915a54e2c *R/get.gene.info.R
 d827aa6440701c26778120ef84542589 *R/load.file.R
 4682b9de1ce19629cd2d8910772466e8 *R/load.packages.R
 ae39f521c3a66c9ac745e7866db6c086 *R/sgRNAs.compare.R
@@ -34,9 +34,9 @@ b3a237066bd7739b38731f09d2acd01c *R/use.caRpools.R
 e1a51fa1a18897da5220fecbd8a84cc2 *R/venn.diagram.crispr.R
 bb6edcf539517affb7c5a0db9eb01178 *build/vignette.rds
 98df54e4f3c63c1af57243ca47baacd5 *data/caRpools.RData
-506832db200c67834d7e3f5619fe4f6f *inst/doc/CaRpools.R
-10be2d8abec32a13188327c4f0f04e2e *inst/doc/CaRpools.Rmd
-af32c9f6da6fb157d6aa941e157ead56 *inst/doc/CaRpools.html
+c49c25c017c4929bc3b9065fb388c899 *inst/doc/CaRpools.R
+b5e442c46a8f6f3dd07bbd80aa8cbe28 *inst/doc/CaRpools.Rmd
+dcdb62a9f959311d051d339c7afdbeb8 *inst/doc/CaRpools.html
 78986d2a4ba8ba708f85139dbc6cbdf6 *man/CONTROL1.Rd
 30ab5a4123471064a24063eb05aaddd5 *man/CONTROL1.g.Rd
 ad6df4a231770cdd32bf64431bf37a88 *man/CONTROL2.Rd
@@ -68,7 +68,7 @@ bdeac2fa8443e1540311acac66553bec *man/d.TREAT1.Rd
 4e0973bc2f485eac4fe9cfa8130a48dc *man/final.table.Rd
 64b5ec628b78fc966fba2b8f8520b5fd *man/gene.remove.Rd
 9e56ca9fb8e0c3aa15b2c7b7f7e18256 *man/generate.hits.Rd
-59b00b487a2fc7746e4d1fe41db62cac *man/get.gene.info.Rd
+4fa228eaf119d62f62abc94fa305d143 *man/get.gene.info.Rd
 615375b1a0cbe3b073f9a5bce91976c1 *man/libFILE.Rd
 a8eeb0499c18cd6ffa11dcf0ecdc286c *man/load.file.Rd
 6cc2cb5fb4bf67e399f9cda01e1e7a15 *man/load.packages.Rd
@@ -79,7 +79,7 @@ a8eeb0499c18cd6ffa11dcf0ecdc286c *man/load.file.Rd
 c1271bf2a59db1d1c58698f1c954d7e8 *man/stats.data.Rd
 494aaaf05839d132bf4c5e5bb06f2cfe *man/unmapped.genes.Rd
 94f150e438ef1342ea4eee7017a6a132 *man/use.caRpools.Rd
-10be2d8abec32a13188327c4f0f04e2e *vignettes/CaRpools.Rmd
+b5e442c46a8f6f3dd07bbd80aa8cbe28 *vignettes/CaRpools.Rmd
 434825b85cd1a16085df90618cd0cf65 *vignettes/pictures/CaRpools.png
 04d643af1066d2429364233a7c8e8104 *vignettes/pictures/MIACCS1.png
 d1ae3357a7aa898fab46fa1dbd388b96 *vignettes/pictures/alignment-match.png

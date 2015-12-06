@@ -15,8 +15,9 @@ For further information about biomaRt conversion, please see the [biomaRt Manual
 }
 \usage{
 get.gene.info(data, namecolumn=1, extractpattern=expression("^(.+?)(_.+)"),
-database="ensembl", dataset="hsapiens_gene_ensembl", filters="ensembl_gene_id",
-attributes = c("hgnc_symbol"), return.val = "dataset", controls=FALSE)
+host="www.ensembl.org", database="ENSEMBL_MART_ENSEMBL", dataset="hsapiens_gene_ensembl",
+filters="ensembl_gene_id", attributes = c("hgnc_symbol"),
+return.val = "dataset", controls=FALSE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -36,9 +37,13 @@ e.g. in **AAK1_107_0** it will extract **AAK1**, since this is the gene identifi
 *Default* expression("^(.+?)(_.+)"), will work for most available libraries.  
 *Values* PERL regular expression with parenthesis indicating the gene identifier (expression)  
 }
+\item{host}{
+Host used to retrieve biomaRt information.
+By default, host is set to www.ensembl.org.
+}
 \item{database}{
 BiomaRt database to be used. See `?listMarts()` or biomaRt documentation.  
-*Default* "ensembl", is using the ensembl database  
+*Default* "ENSEMBL_MART_ENSEMBL", is using the ensembl database  
 *Values* Any biomaRt database (character)  
 }
 \item{dataset}{
@@ -88,9 +93,10 @@ none
 \examples{
 data(caRpools)
 #CONTROL1.replaced = get.gene.info(CONTROL1, namecolumn=1,
-#extractpattern=expression("^(.+?)(_.+)"), database="ensembl",
-#dataset="hsapiens_gene_ensembl", filters="hgnc_symbol",
-#attributes = c("ensembl_gene_id"), return.val = "dataset")
+#extractpattern=expression("^(.+?)(_.+)"), host="www.ensembl.org",
+#database="ensembl", #dataset="hsapiens_gene_ensembl",
+#filters="hgnc_symbol",attributes = c("ensembl_gene_id"),
+#return.val = "dataset")
 
 #knitr::kable(CONTROL1.replaced[1:10,])
 

@@ -1,4 +1,4 @@
-get.gene.info = function(data, namecolumn=1, extractpattern=expression("^(.+?)(_.+)"), database="ensembl", dataset="hsapiens_gene_ensembl", filters="ensembl_gene_id", attributes = c("hgnc_symbol"), return.val = "dataset", controls=FALSE)
+get.gene.info = function(data, namecolumn=1, extractpattern=expression("^(.+?)(_.+)"), host="www.ensembl.org", database="ENSEMBL_MART_ENSEMBL", dataset="hsapiens_gene_ensembl", filters="ensembl_gene_id", attributes = c("hgnc_symbol"), return.val = "dataset", controls=FALSE)
 {
 #   if("biomaRt" %in% rownames(installed.packages()) == FALSE) {
 #     source("http://bioconductor.org/biocLite.R")
@@ -31,7 +31,7 @@ if(!is.null(data) && nrow(data)>=1)
     
     
     #start biomaRt interface and check if biomaRt is available
-    handling = biomaRt::useMart(database)
+    handling = biomaRt::useMart(database, host=host)
     if(!exists("handling"))
     {stop("biomaRt connection is not working. This can be a connectivity issue (e.g. proxy settings, internet connection) or the biomaRt service is currently not avaible. \n
           You can skip any data annotation by setting it to FALSE in the MIACCS file.")}
@@ -124,7 +124,7 @@ if(!is.null(data) && nrow(data)>=1)
       gene.names = sub(extractpattern,"\\1",data[,namecolumn],perl=TRUE)
     }
     #start biomaRt interface
-    handling = biomaRt::useMart(database)
+    handling = biomaRt::useMart(database, host=host)
     if(!exists("handling"))
     {stop("biomaRt connection is not working. This can be a connectivity issue (e.g. proxy settings, internet connection) or the biomaRt service is currently not avaible. \n
           You can skip any data annotation by setting it to FALSE in the MIACCS file.")}

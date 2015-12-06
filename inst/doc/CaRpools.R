@@ -110,24 +110,26 @@ knitr::kable(CONTROL1.g.annotate[1:10,])
 #  # Convert HGNC gene symbol to EnsemblID
 #  CONTROL1 = get.gene.info(
 #    CONTROL1, namecolumn=1, extractpattern=expression("^(.+?)(_.+)"),
-#    database="ensembl", dataset="hsapiens_gene_ensembl", filters="hgnc_symbol",
+#    host="www.ensembl.org",
+#    database="ENSEMBL_MART_ENSEMBL", dataset="hsapiens_gene_ensembl", filters="hgnc_symbol",
 #    attributes = "ensembl_gene_id", return.val = "dataset")
 #  # Also convert the library reference
 #  libFILE = get.gene.info(
 #    libFILE, namecolumn=1, extractpattern=expression("^(.+?)(_.+)"),
-#    database="ensembl", dataset="hsapiens_gene_ensembl", filters="hgnc_symbol",
+#    host="www.ensembl.org",
+#    database="ENSEMBL_MART_ENSEMBL", dataset="hsapiens_gene_ensembl", filters="hgnc_symbol",
 #    attributes = "ensembl_gene_id", return.val = "dataset")
 
 ## ----geneinfo-replace, echo=TRUE, eval=TRUE------------------------------
-CONTROL1.replaced = get.gene.info(CONTROL1, namecolumn=1,
-      extractpattern=expression("^(.+?)(_.+)"), database="ensembl", dataset="hsapiens_gene_ensembl",
+CONTROL1.replaced = get.gene.info(CONTROL1, namecolumn=1, host="www.ensembl.org",
+      extractpattern=expression("^(.+?)(_.+)"), database="ENSEMBL_MART_ENSEMBL", dataset="hsapiens_gene_ensembl",
       filters="hgnc_symbol", attributes =c("ensembl_gene_id"), return.val = "dataset")
 
 knitr::kable(CONTROL1.replaced[1:10,])
 
 ## ----geneinfo-replace2, echo=TRUE, eval=TRUE-----------------------------
-CONTROL1.replaced.info = get.gene.info(CONTROL1, namecolumn=1,
-      extractpattern=expression("^(.+?)(_.+)"), database="ensembl", dataset="hsapiens_gene_ensembl",
+CONTROL1.replaced.info = get.gene.info(CONTROL1, namecolumn=1, host="www.ensembl.org",
+      extractpattern=expression("^(.+?)(_.+)"), database="ENSEMBL_MART_ENSEMBL", dataset="hsapiens_gene_ensembl",
       filters="hgnc_symbol", attributes = c("ensembl_gene_id","description"), return.val = "info")
 
 knitr::kable(CONTROL1.replaced.info[1:10,])
